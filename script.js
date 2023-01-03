@@ -24,7 +24,8 @@ function setup() {
     textFont(font);
     textSize(fontSize);
     textAlign(CENTER, CENTER);
-    createCanvas(canvasR * 2, canvasR * 2);
+    let cnv = createCanvas(canvasR * 2, canvasR * 2);
+    cnv.class('soft-shadow');
     angleMode(DEGREES);
     baseColor = color(0, 0, 0);
     highlightColor = color(0, 127, 255);
@@ -35,6 +36,7 @@ class Letter {
         this.color = color;
         this.x = x;
         this.y = y;
+        this.saveXY = [x, y];
         if (x >= 0) {
             if (y >= 0) {
                 this.angle = atan(y / x);
@@ -56,8 +58,8 @@ class Letter {
         this.vX = 0.0;
         this.vY = 0.0;
         this.k = 0.8;
-        this.damp = 0.05;
-        this.mass = 0.1;
+        this.damp = 0.8;
+        this.mass = 5;
         this.accel = 0;
         this.force = 0;
     }
@@ -88,24 +90,35 @@ class Letter {
 
 let theta = 0.1;
 let rotSpeed = 1;
+let margin = 50;
+let lastMargin = 50;
 let items = [];
 
 function draw() {
+    rotSpeed = select('#rotation-speed').value();
+    margin = select('#spacing').value();
+    mass = select('#mass').value();
+    k = select('#spring-k').value();
+    damp = select('#spring-damp').value();
+    maxDisp = select('#stretch-dist').value();
+
     // convert coordinate system to conventional
     translate(width / 2, height / 2);
     scale(1, -1);
-    background(255);
-
-    // horizontal, vertical space between items
-    let space = 50;
+    clear();
 
     let i = 0;
-    for (let y = -canvasR; y <= canvasR; y += space) {
-        for (let x = -canvasR; x <= canvasR; x += space) {
+    for (let y = -canvasR; y <= canvasR; y += margin) {
+        for (let x = -canvasR; x <= canvasR; x += margin) {
             let letter = message[i % message.length];
-            if (!items[i]) {
+            if (!items[i] || margin != lastMargin) {
                 items[i] = new Letter(baseColor, x, y);
             }
+
+            items[i].mass = mass;
+            items[i].k = k;
+            items[i].damp = damp;
+            items[i].stretchDist = maxDisp;
 
             // update color
             items[i].updateColor();
@@ -115,8 +128,6 @@ function draw() {
             if (modulo(theta - items[i].angle, 360) > 8) {
                 // springing back
                 // use mass, damp to customize motion
-                items[i].mass = 5;
-                items[i].damp = 0.8;
                 items[i].restX = items[i].restPoints[0][0];
                 items[i].restY = items[i].restPoints[0][1];
             } else if (modulo(theta - items[i].angle, 360) > 2) {
@@ -135,4 +146,6 @@ function draw() {
 
     // prevent color flicker at vertical, horiztonal line
     theta = Math.round((theta + rotSpeed) % 360) + 0.1;
+
+    lastMargin = margin;
 }

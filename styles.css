@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src: url('fonts/AtkinsonHyperlegible-Bold.ttf');
+}
+
+body {
+    background-color: #e0e0e0;
+    font-family: Atkinson Hyperlegible;
+}
+
+canvas {
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    height: 900px;
+}
+
+.soft-shadow {
+    border-radius: 40px;
+    box-shadow: 30px 30px 60px #bebebe, -30px -30px 60px #fff;
+}
+
+#inner-shadow {
+    height: 800px;
+    width: 800px;
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    border-radius: 40px;
+    background: #e0e0e0;
+    box-shadow: inset 40px 40px 100px #bebebe, inset -80px -80px 100px #fff;
+}
+
+#sliders {
+    display: grid;
+    grid-template-areas:
+        'rotation-speed mass spacing'
+        'spring-k spring-damp stretch-dist';
+    position: absolute;
+    height: 800px;
+    top: 80px;
+    left: 950px;
+    width: calc(100vw - 1020px);
+}
+
+.setting {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.setting-name {
+    font-size: 40px;
+    text-align: center;
+}

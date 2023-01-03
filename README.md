@@ -17,6 +17,17 @@ strokeWeight(8);
 line(canvasR * cos(theta) * Math.sqrt(2), canvasR * sin(theta) * Math.sqrt(2), 0, 0);
 ```
 
+### Add shadows
+
+Add to `draw()`
+
+```javascript
+drawingContext.shadowOffsetX = 3;
+drawingContext.shadowOffsetY = 5;
+drawingContext.shadowBlur = 10;
+drawingContext.shadowColor = 'grey';
+```
+
 ### Debug coordinates
 
 Add to `draw()` directly after `updatePos()` and `text()` and before `i++`
